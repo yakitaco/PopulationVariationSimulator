@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace PVS {
 
-    class conf {
+    class pvs_conf {
         Dictionary<string, dynamic> paramList = new Dictionary<string, dynamic>();
         private const string delimiter = "=";
 
-        public conf(string fileName) {
+        public pvs_conf(string fileName) {
             paramList.Add("height", "300");
             paramList.Add("width", "1000");
             paramList.Add("player1", "0");

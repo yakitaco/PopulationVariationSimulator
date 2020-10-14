@@ -9,8 +9,15 @@ namespace PVS {
 
     }
 
-    class map {
-        mapCell[,] mapData = new mapCell[2,2];
+    class pvs_map {
+        mapCell[,] mapData;
+
+        public pvs_map(int x,int y){
+            mapData = new mapCell[x, y];
+        }
+
+
+
     }
 
 
