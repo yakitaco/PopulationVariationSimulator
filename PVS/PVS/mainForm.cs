@@ -7,6 +7,9 @@ namespace PVS {
         int Xcells;
         int Ycells;
 
+        bool bDrag = false;
+        Point posStart;
+
         ToolTip ToolTip1;
         Point sp, cp;
         Random rnd = new System.Random();
@@ -35,7 +38,7 @@ namespace PVS {
                 flga = true;
 
                 //200x100サイズのImageオブジェクトを作成する
-                Bitmap img = new Bitmap(1000, 1000);
+                Bitmap img = new Bitmap(Xcells*4, Ycells*4);
 
                 //Graphics g = this.CreateGraphics();
                 Graphics g = Graphics.FromImage(img);
@@ -50,11 +53,11 @@ namespace PVS {
                 double y2_rnd = rnd.NextDouble();
                 double z2_rnd = rnd.NextDouble();
 
-                for (int i = 0; i < this.ClientSize.Width / 4; i++) {
-                    for (int j = 0; j < this.ClientSize.Height / 4; j++) {
+                for (int i = 0; i < Xcells; i++) {
+                    for (int j = 0; j < Ycells; j++) {
                         var c = pl.OctavePerlin(0.1 * i + x1_rnd, 0.1 * j + y1_rnd, z1_rnd, 6, 0.5) / 2.0 + pl.OctavePerlin(0.1 * i + x2_rnd, 0.1 * j + y2_rnd, z2_rnd, 3, 0.5) / 2.0;
                         //c = c / 0.9 - Math.Cos(((double)i * 50.0 / (double)this.Width)) / Math.PI / 5.0 - Math.Cos(((double)j * 50.0 / (double)this.Height)) / Math.PI / 5.0 - 0.05f;
-                        c = Math.Min(Math.Max(c / 0.5 - 0.6 - Math.Cos((double)i / (double)this.ClientSize.Width * Math.PI * 16.0) / 4.0 - Math.Cos((double)j / (double)this.ClientSize.Height * Math.PI * 16.0) / 4.0, 0.0), 1.0);
+                        c = Math.Min(Math.Max(c / 0.5 - 0.6 - Math.Cos((double)i / (double)Xcells * Math.PI * 4.0) / 4.0 - Math.Cos((double)j / (double)Ycells * Math.PI * 4.0) / 4.0, 0.0), 1.0);
                         Pen p;
                         if (c > 0.5) {
                             p = new Pen(Color.FromArgb((int)(255 * c - 100 + rnd.NextDouble() * 3), (int)(255 * c - rnd.NextDouble() * 3), (int)(255 * c - 100 + rnd.NextDouble() * 3)), 4);
@@ -106,23 +109,38 @@ namespace PVS {
             timer.Interval = 1;
             timer.Enabled = true;
 
-            timer.Tick += (_s, _e) =>
-            {
-                cp = this.PointToClient(Cursor.Position);
-                this.label1.Location = new Point(cp.X + 16, cp.Y + 16);
-                label1.Text = cnt.ToString() + "(" + cp.X.ToString() + "," + cp.Y.ToString() + ")";
+            timer.Tick += (_s, _e) => {
+                cp = this.Map_pctBox.PointToClient(Cursor.Position);
+                this.label1.Location = new Point(this.PointToClient(Cursor.Position).X + 16, this.PointToClient(Cursor.Position).Y + 16);
+                label1.Text = cnt.ToString() + "(" + (cp.X / 4).ToString() + "," + (cp.Y / 4).ToString() + ")";
                 cnt++;
             };
 
         }
 
-        private void Form1_MouseMove(object sender, MouseEventArgs e) {
-            // スクリーン座標の取得
-            sp = Cursor.Position;
-            // クライアント座標に変換
-            cp = this.PointToClient(sp);
-            //label1.Text = string.Format(""Screen position: [{ 0:d}, { 1:d}]"", sp.X, sp.Y);
-            //label2.Text = string.Format(""Client position: [{ 0:d}, { 1:d}]"", cp.X, cp.Y);
+        private void Map_pctBox_MouseDown(object sender, MouseEventArgs e) {
+            // ドラッグ開始
+            bDrag = true;
+            posStart = e.Location;
         }
+
+        private void Map_pctBox_MouseUp(object sender, MouseEventArgs e) {
+            // ドラッグ終了
+            bDrag = false;
+        }
+
+        private void Map_pctBox_MouseMove(object sender, MouseEventArgs e) {
+            // ドラッグ中ならスクロール
+            if (bDrag) {
+                Point pos = new Point(
+                    e.Location.X - posStart.X,
+                    e.Location.Y - posStart.Y);
+
+                splitContainer1.Panel1.AutoScrollPosition = new Point(
+                    -splitContainer1.Panel1.AutoScrollPosition.X - pos.X,
+                    -splitContainer1.Panel1.AutoScrollPosition.Y - pos.Y);
+            }
+        }
+
     }
 }

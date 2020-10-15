@@ -25,12 +25,12 @@ namespace PVS {
             mainForm.Size = new System.Drawing.Size((int)cnf.getPrmInt("width"), (int)cnf.getPrmInt("height"));
 
             //非同期フォーム
-            //Task.Run(() => {
-            //    Application.Run(mainForm); // フォーム
-            //});
+            Task.Run(() => {
+                Application.Run(mainForm); // フォーム
+            });
 
-            //Thread.Sleep(100000);
-            Application.Run(mainForm);
+            Thread.Sleep(100000);
+            //Application.Run(mainForm);
         }
     }
 }
