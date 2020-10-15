@@ -12,8 +12,8 @@ namespace PVS {
             paramList.Add("width", "1000");
             paramList.Add("player1", "0");
             paramList.Add("player2", "1");
-            paramList.Add("Xcells", "7");
-            paramList.Add("Ycells", "5");
+            paramList.Add("Xcells", "1000");
+            paramList.Add("Ycells", "1000");
             paramList.Add("saveLog", "0");
             load(fileName);
         }
