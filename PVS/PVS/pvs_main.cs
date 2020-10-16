@@ -22,12 +22,18 @@ namespace PVS {
             pvs_conf cnf = new pvs_conf(confFileName);
 
             mainForm = new mainForm((int)cnf.getPrmInt("Xcells"), (int)cnf.getPrmInt("Ycells"));
+            mainForm.fInstance = mainForm;
             mainForm.Size = new System.Drawing.Size((int)cnf.getPrmInt("width"), (int)cnf.getPrmInt("height"));
 
             //非同期フォーム
             Task.Run(() => {
                 Application.Run(mainForm); // フォーム
             });
+
+            //マップオブジェクト作成
+            pvs_map map = new pvs_map((int)cnf.getPrmInt("Xcells"), (int)cnf.getPrmInt("Ycells"));
+            map.make();
+            mainForm.fInstance.SetMapImg(map.img.bitmap);
 
             Thread.Sleep(100000);
             //Application.Run(mainForm);

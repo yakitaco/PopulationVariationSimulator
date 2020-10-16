@@ -16,6 +16,19 @@ namespace PVS {
         bool flga = false;
         int cnt = 0;
 
+        //mainFormオブジェクトを保持するためのフィールド
+        private static mainForm _mainFormInstance;
+
+        //mainFormオブジェクトを取得、設定するためのプロパティ
+        public static mainForm fInstance {
+            get {
+                return _mainFormInstance;
+            }
+            set {
+                _mainFormInstance = value;
+            }
+        }
+
         public mainForm(int _X, int _Y) {
             Xcells = _X;
             Ycells = _Y;
@@ -33,12 +46,12 @@ namespace PVS {
 
         private void Form1_Paint(object sender, PaintEventArgs e) {
             // Graphicsオブジェクトの作成
-#if true
+#if false
             if (flga == false) {
-                flga = true;
+                //flga = true;
 
                 //200x100サイズのImageオブジェクトを作成する
-                Bitmap img = new Bitmap(Xcells*4, Ycells*4);
+                Bitmap img = new Bitmap(Xcells * 4, Ycells * 4);
 
                 //Graphics g = this.CreateGraphics();
                 Graphics g = Graphics.FromImage(img);
@@ -77,6 +90,20 @@ namespace PVS {
             }
 #endif
 
+        }
+
+        //[デバッグ用]全セル情報更新
+        delegate void delegate1(Bitmap img);
+        public void SetMapImg(Bitmap img) {
+            if (this.InvokeRequired) {
+                Invoke(new delegate1(_SetMapImg), img);
+            } else {
+                _SetMapImg(img);
+            }
+        }
+        public void _SetMapImg(Bitmap img) {
+            //作成した画像を表示する
+            Map_pctBox.Image = img;
         }
 
         private void Form1_Load(object sender, EventArgs e) {
