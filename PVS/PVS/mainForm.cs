@@ -92,8 +92,9 @@ namespace PVS {
 
         }
 
-        //[デバッグ用]全セル情報更新
+        //マップイメージ表示用デリゲート
         delegate void delegate1(Bitmap img);
+
         public void SetMapImg(Bitmap img) {
             if (this.InvokeRequired) {
                 Invoke(new delegate1(_SetMapImg), img);
@@ -167,6 +168,21 @@ namespace PVS {
                     -splitContainer1.Panel1.AutoScrollPosition.X - pos.X,
                     -splitContainer1.Panel1.AutoScrollPosition.Y - pos.Y);
             }
+        }
+
+        //表示終了用デリゲート
+        delegate void delegate2();
+
+        public void ActiveForm() {
+            if (this.InvokeRequired) {
+                Invoke(new delegate2(_ActiveForm));
+            } else {
+                _ActiveForm();
+            }
+        }
+
+        public void _ActiveForm() {
+            this.Activate();
         }
 
     }

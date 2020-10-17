@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace PVS {
     //セルの種類
@@ -38,6 +39,9 @@ namespace PVS {
     }
 
     class pvs_map {
+        // delegate型の宣言
+        public delegate void Callback(int val);
+
         mapCell[,] mapData;
         public mapImage img;
         int Xcells;
@@ -49,7 +53,7 @@ namespace PVS {
             Ycells = y;
         }
 
-        public void make() {
+        public bool make(Callback callback) {
             //200x100サイズのImageオブジェクトを作成する
             img = new mapImage(Xcells, Ycells);
             Random rnd = new System.Random();
@@ -80,10 +84,18 @@ namespace PVS {
                     g.DrawRectangle(p, i * 4, j * 4, 4, 4);
                     p.Dispose();
                 }
+                if (progressForm.fInstance.cancel == true) {
+                    mainForm.fInstance.ActiveForm();
+                    // Graphicsを解放する
+                    g.Dispose();
+                    return false;
+                }
+                callback(i);
             }
 
             // Graphicsを解放する
             g.Dispose();
+            return true;
         }
 
     }
