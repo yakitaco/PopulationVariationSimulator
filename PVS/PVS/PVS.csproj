@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="progressForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="progressForm.Designer.cs">
+      <DependentUpon>progressForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="pvs_conf.cs" />
     <Compile Include="mainForm.cs">
       <SubType>Form</SubType>
@@ -59,6 +65,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="mainForm.resx">
       <DependentUpon>mainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="progressForm.resx">
+      <DependentUpon>progressForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
