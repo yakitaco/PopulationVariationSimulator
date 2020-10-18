@@ -23,6 +23,9 @@
         /// コード エディターで変更しないでください。
         /// </summary>
         private void InitializeComponent() {
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.label1 = new System.Windows.Forms.Label();
             this.Map_pctBox = new System.Windows.Forms.PictureBox();
@@ -31,6 +34,7 @@
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.button1 = new System.Windows.Forms.Button();
             this.trackBar2 = new System.Windows.Forms.TrackBar();
+            this.p_graph = new System.Windows.Forms.DataVisualization.Charting.Chart();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -42,6 +46,7 @@
             this.splitContainer2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.p_graph)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -95,6 +100,7 @@
             // 
             // splitContainer2.Panel1
             // 
+            this.splitContainer2.Panel1.Controls.Add(this.p_graph);
             this.splitContainer2.Panel1.Controls.Add(this.button1);
             this.splitContainer2.Panel1.Controls.Add(this.trackBar1);
             // 
@@ -102,7 +108,7 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.textBox1);
             this.splitContainer2.Size = new System.Drawing.Size(574, 544);
-            this.splitContainer2.SplitterDistance = 191;
+            this.splitContainer2.SplitterDistance = 289;
             this.splitContainer2.TabIndex = 0;
             // 
             // textBox1
@@ -114,19 +120,19 @@
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox1.Size = new System.Drawing.Size(535, 346);
+            this.textBox1.Size = new System.Drawing.Size(535, 248);
             this.textBox1.TabIndex = 0;
             // 
             // trackBar1
             // 
-            this.trackBar1.Location = new System.Drawing.Point(22, 119);
+            this.trackBar1.Location = new System.Drawing.Point(22, 215);
             this.trackBar1.Name = "trackBar1";
             this.trackBar1.Size = new System.Drawing.Size(435, 69);
             this.trackBar1.TabIndex = 0;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(463, 135);
+            this.button1.Location = new System.Drawing.Point(463, 215);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 1;
@@ -141,6 +147,24 @@
             this.trackBar2.Size = new System.Drawing.Size(69, 303);
             this.trackBar2.TabIndex = 3;
             // 
+            // p_graph
+            // 
+            this.p_graph.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            chartArea1.Name = "ChartArea1";
+            this.p_graph.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.p_graph.Legends.Add(legend1);
+            this.p_graph.Location = new System.Drawing.Point(22, 12);
+            this.p_graph.Name = "p_graph";
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.p_graph.Series.Add(series1);
+            this.p_graph.Size = new System.Drawing.Size(540, 197);
+            this.p_graph.TabIndex = 2;
+            this.p_graph.Text = "chart1";
+            // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 18F);
@@ -150,6 +174,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "mainForm";
             this.Text = "PVS";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.mainForm_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -166,6 +191,7 @@
             this.splitContainer2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.p_graph)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -180,6 +206,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TrackBar trackBar1;
         private System.Windows.Forms.TrackBar trackBar2;
+        private System.Windows.Forms.DataVisualization.Charting.Chart p_graph;
     }
 }
 

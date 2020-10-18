@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace PVS {
     public partial class mainForm : Form {
@@ -137,19 +138,35 @@ namespace PVS {
             timer.Interval = 1;
             timer.Enabled = true;
 
+
+            // フォームをロードするときの処理
+            p_graph.Series.Clear();
+            p_graph.ChartAreas.Clear();
+
+            // ChartにChartAreaを追加します
+            string chart_area1 = "Main";
+            p_graph.ChartAreas.Add(new ChartArea(chart_area1));
+            // ChartにSeriesを追加します
+            string p = "Population";
+            p_graph.Series.Add(p);
+            // 折れ線グラフ指定
+            p_graph.Series[p].ChartType = SeriesChartType.Line;
+
             timer.Tick += (_s, _e) => {
-                cp = this.Map_pctBox.PointToClient(Cursor.Position);
-                this.label1.Location = new Point(this.PointToClient(Cursor.Position).X + 16, this.PointToClient(Cursor.Position).Y + 16);
+                cp = this.Map_pctBox.PointToClient(System.Windows.Forms.Cursor.Position);
+                this.label1.Location = new Point(this.PointToClient(System.Windows.Forms.Cursor.Position).X + 16, this.PointToClient(System.Windows.Forms.Cursor.Position).Y + 16);
                 label1.Text = cnt.ToString() + "(" + (cp.X / 4).ToString() + "," + (cp.Y / 4).ToString() + ")";
+                p_graph.Series[p].Points.AddY(cnt * cnt + rnd.Next(1,100));
                 cnt++;
             };
-
         }
 
         private void Map_pctBox_MouseDown(object sender, MouseEventArgs e) {
             // ドラッグ開始
             bDrag = true;
             posStart = e.Location;
+
+
         }
 
         private void Map_pctBox_MouseUp(object sender, MouseEventArgs e) {
@@ -179,6 +196,10 @@ namespace PVS {
             } else {
                 _ActiveForm();
             }
+        }
+
+        private void mainForm_FormClosed(object sender, FormClosedEventArgs e) {
+            pvs_main.finishFlg = true; // メイン終了
         }
 
         public void _ActiveForm() {

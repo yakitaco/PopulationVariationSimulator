@@ -73,8 +73,8 @@ namespace PVS {
             cancel = true;
             MessageBox.Show("中断しました", "progressForm",
             MessageBoxButtons.OK, MessageBoxIcon.Stop);
-            pvs_main.finishFlg = true; // メイン終了
             this.Close();
+            pvs_main.finishFlg = true; // メイン終了
         }
 
 
