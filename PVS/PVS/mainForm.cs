@@ -12,11 +12,16 @@ namespace PVS {
         bool bDrag = false;
         Point posStart;
 
+        //シミュレーション速度
+        Timer SimSpdTimer = new Timer();
+
         ToolTip ToolTip1;
         Point cp;
         Random rnd = new System.Random();
         bool flga = false;
         int cnt = 0;
+
+        static bool StopFlg = false;
 
         //mainFormオブジェクトを保持するためのフィールド
         private static mainForm _mainFormInstance;
@@ -98,9 +103,8 @@ namespace PVS {
             ToolTip1.SetToolTip(this, "Button1です" + cp.X + "," + cp.Y);
             //ToolTip1.SetToolTip(Button2, "Button2です");
 
-            var timer = new Timer();
-            timer.Interval = 1;
-            timer.Enabled = true;
+            SimSpdTimer.Interval = 1;
+            SimSpdTimer.Enabled = true;
 
 
             // フォームをロードするときの処理
@@ -116,7 +120,7 @@ namespace PVS {
             // 折れ線グラフ指定
             p_graph.Series[p].ChartType = SeriesChartType.Line;
 
-            timer.Tick += (_s, _e) => {
+            SimSpdTimer.Tick += (_s, _e) => {
                 cp = this.Map_pctBox.PointToClient(System.Windows.Forms.Cursor.Position);
                 this.label1.Location = new Point(this.PointToClient(System.Windows.Forms.Cursor.Position).X + 16, this.PointToClient(System.Windows.Forms.Cursor.Position).Y + 16);
                 label1.Text = cnt.ToString() + "(" + (cp.X / 4).ToString() + "," + (cp.Y / 4).ToString() + ")";
@@ -175,5 +179,22 @@ namespace PVS {
             ShowMapImg();
         }
 
+        //シミュレーション速度変更
+        private void simSpeed_TRB_Scroll(object sender, EventArgs e) {
+            SimSpdTimer.Interval = 100 - simSpeed_TRB.Value*10+1;
+        }
+
+        //シミュレーション停止ボタン
+        private void simStop_Btn_Click(object sender, EventArgs e) {
+            if (StopFlg == false) {
+                simStop_Btn.Text = "Start";
+                StopFlg = true;
+                SimSpdTimer.Enabled = false;
+            } else {
+                simStop_Btn.Text = "Stop";
+                StopFlg = false;
+                SimSpdTimer.Enabled = true;
+            }
+        }
     }
 }
