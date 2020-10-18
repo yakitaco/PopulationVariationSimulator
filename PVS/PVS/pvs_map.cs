@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PVS {
@@ -39,9 +40,6 @@ namespace PVS {
     }
 
     class pvs_map {
-        // delegate型の宣言
-        public delegate void Callback(int val);
-
         mapCell[,] mapData;
         public mapImage img;
         int Xcells;
@@ -53,7 +51,7 @@ namespace PVS {
             Ycells = y;
         }
 
-        public bool make(Callback callback) {
+        public bool make() {
             //200x100サイズのImageオブジェクトを作成する
             img = new mapImage(Xcells, Ycells);
             Random rnd = new System.Random();
@@ -70,6 +68,13 @@ namespace PVS {
             double y2_rnd = rnd.NextDouble();
             double z2_rnd = rnd.NextDouble();
 
+            progressForm.fInstance = new progressForm(Xcells);
+
+            //非同期フォーム
+            Task.Run(() => {
+                Application.Run(progressForm.fInstance); // フォーム
+            });
+
             for (int i = 0; i < Xcells; i++) {
                 for (int j = 0; j < Ycells; j++) {
                     var c = pl.OctavePerlin(0.1 * i + x1_rnd, 0.1 * j + y1_rnd, z1_rnd, 6, 0.5) / 2.0 + pl.OctavePerlin(0.1 * i + x2_rnd, 0.1 * j + y2_rnd, z2_rnd, 3, 0.5) / 2.0;
@@ -85,13 +90,14 @@ namespace PVS {
                     p.Dispose();
                 }
                 if (progressForm.fInstance.cancel == true) {
-                    mainForm.fInstance.ActiveForm();
                     // Graphicsを解放する
                     g.Dispose();
                     return false;
                 }
-                callback(i);
+                progressForm.fInstance.SetProgVal(i);
             }
+
+            progressForm.fInstance.CloseProg();
 
             // Graphicsを解放する
             g.Dispose();
