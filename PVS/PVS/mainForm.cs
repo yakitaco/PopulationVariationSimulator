@@ -7,12 +7,13 @@ namespace PVS {
     public partial class mainForm : Form {
         int Xcells;
         int Ycells;
+        Bitmap img;
 
         bool bDrag = false;
         Point posStart;
 
         ToolTip ToolTip1;
-        Point sp, cp;
+        Point cp;
         Random rnd = new System.Random();
         bool flga = false;
         int cnt = 0;
@@ -46,66 +47,36 @@ namespace PVS {
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e) {
-            // Graphicsオブジェクトの作成
-#if false
-            if (flga == false) {
-                //flga = true;
-
-                //200x100サイズのImageオブジェクトを作成する
-                Bitmap img = new Bitmap(Xcells * 4, Ycells * 4);
-
-                //Graphics g = this.CreateGraphics();
-                Graphics g = Graphics.FromImage(img);
-
-
-                Perlin pl = new Perlin();
-
-                double x1_rnd = rnd.NextDouble();
-                double y1_rnd = rnd.NextDouble();
-                double z1_rnd = rnd.NextDouble();
-                double x2_rnd = rnd.NextDouble();
-                double y2_rnd = rnd.NextDouble();
-                double z2_rnd = rnd.NextDouble();
-
-                for (int i = 0; i < Xcells; i++) {
-                    for (int j = 0; j < Ycells; j++) {
-                        var c = pl.OctavePerlin(0.1 * i + x1_rnd, 0.1 * j + y1_rnd, z1_rnd, 6, 0.5) / 2.0 + pl.OctavePerlin(0.1 * i + x2_rnd, 0.1 * j + y2_rnd, z2_rnd, 3, 0.5) / 2.0;
-                        //c = c / 0.9 - Math.Cos(((double)i * 50.0 / (double)this.Width)) / Math.PI / 5.0 - Math.Cos(((double)j * 50.0 / (double)this.Height)) / Math.PI / 5.0 - 0.05f;
-                        c = Math.Min(Math.Max(c / 0.5 - 0.6 - Math.Cos((double)i / (double)Xcells * Math.PI * 4.0) / 4.0 - Math.Cos((double)j / (double)Ycells * Math.PI * 4.0) / 4.0, 0.0), 1.0);
-                        Pen p;
-                        if (c > 0.5) {
-                            p = new Pen(Color.FromArgb((int)(255 * c - 100 + rnd.NextDouble() * 3), (int)(255 * c - rnd.NextDouble() * 3), (int)(255 * c - 100 + rnd.NextDouble() * 3)), 4);
-                        } else {
-                            p = new Pen(Color.FromArgb((int)(155 * c + rnd.NextDouble() * 3), (int)(155 * c + rnd.NextDouble() * 3), (int)(255 * c - rnd.NextDouble() * 3) + 100), 4);
-                        }
-                        g.DrawRectangle(p, i * 4, j * 4, 4, 4);
-                        p.Dispose();
-                    }
-                }
-
-                // Graphicsを解放する
-                g.Dispose();
-
-                //作成した画像を表示する
-                Map_pctBox.Image = img;
-            }
-#endif
-
         }
 
         //マップイメージ表示用デリゲート
-        delegate void delegate1(Bitmap img);
+        delegate void delegate1(Bitmap _img);
 
-        public void SetMapImg(Bitmap img) {
+        public void SetMapImg(Bitmap _img) {
             if (this.InvokeRequired) {
-                Invoke(new delegate1(_SetMapImg), img);
+                Invoke(new delegate1(_SetMapImg), _img);
             } else {
-                _SetMapImg(img);
+                _SetMapImg(_img);
             }
         }
-        public void _SetMapImg(Bitmap img) {
+        private void _SetMapImg(Bitmap _img) {
+            img = _img;
+            var a = mapSize_TRB.Value;
             //作成した画像を表示する
-            Map_pctBox.Image = img;
+            //Map_pctBox.Image = _img;
+            ShowMapImg();
+        }
+
+        //作成した画像を表示する
+        private void ShowMapImg() {
+            int _Width = img.Width * mapSize_TRB.Value / 10;
+            int _Height = img.Height * mapSize_TRB.Value / 10;
+            Bitmap bmpResize = new Bitmap(_Width, _Height);
+            Graphics g = Graphics.FromImage(bmpResize);
+            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+            //g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+            g.DrawImage(img, 0, 0, _Width, _Height);
+            Map_pctBox.Image = bmpResize;
         }
 
         private void Form1_Load(object sender, EventArgs e) {
@@ -126,13 +97,6 @@ namespace PVS {
             //Button1とButton2にToolTipが表示されるようにする
             ToolTip1.SetToolTip(this, "Button1です" + cp.X + "," + cp.Y);
             //ToolTip1.SetToolTip(Button2, "Button2です");
-
-
-
-            //this.FormBorderStyle = FormBorderStyle.None;
-            //this.Size = new Size(32, 32);
-            //this.TopMost = true;
-            //this.BackColor = Color.Aqua;
 
             var timer = new Timer();
             timer.Interval = 1;
@@ -156,7 +120,7 @@ namespace PVS {
                 cp = this.Map_pctBox.PointToClient(System.Windows.Forms.Cursor.Position);
                 this.label1.Location = new Point(this.PointToClient(System.Windows.Forms.Cursor.Position).X + 16, this.PointToClient(System.Windows.Forms.Cursor.Position).Y + 16);
                 label1.Text = cnt.ToString() + "(" + (cp.X / 4).ToString() + "," + (cp.Y / 4).ToString() + ")";
-                p_graph.Series[p].Points.AddY(cnt * cnt + rnd.Next(1,100));
+                p_graph.Series[p].Points.AddY(cnt * cnt + rnd.Next(1, 100));
                 cnt++;
             };
         }
@@ -198,12 +162,17 @@ namespace PVS {
             }
         }
 
+        public void _ActiveForm() {
+            this.Activate();
+        }
+
         private void mainForm_FormClosed(object sender, FormClosedEventArgs e) {
             pvs_main.finishFlg = true; // メイン終了
         }
 
-        public void _ActiveForm() {
-            this.Activate();
+        //マップサイズ変更
+        private void mapSize_TRB_Scroll(object sender, EventArgs e) {
+            ShowMapImg();
         }
 
     }
