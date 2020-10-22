@@ -123,7 +123,7 @@ namespace PVS {
             SimSpdTimer.Tick += (_s, _e) => {
                 cp = this.Map_pctBox.PointToClient(System.Windows.Forms.Cursor.Position);
                 this.label1.Location = new Point(this.PointToClient(System.Windows.Forms.Cursor.Position).X + 16, this.PointToClient(System.Windows.Forms.Cursor.Position).Y + 16);
-                label1.Text = cnt.ToString() + "(" + (cp.X / 4).ToString() + "," + (cp.Y / 4).ToString() + ")";
+                label1.Text = cnt.ToString() + "(" + (cp.X * 10 / mapSize_TRB.Value / 4).ToString() + "," + (cp.Y * 10 / mapSize_TRB.Value / 4).ToString() + ")";
                 p_graph.Series[p].Points.AddY(cnt * cnt + rnd.Next(1, 100));
                 cnt++;
             };
