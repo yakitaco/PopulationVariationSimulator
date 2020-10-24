@@ -196,5 +196,20 @@ namespace PVS {
                 SimSpdTimer.Enabled = true;
             }
         }
+
+        //ログ表示用デリゲート
+        delegate void delegate3(string str);
+
+        public void AddLog(string str) {
+            if (this.InvokeRequired) {
+                Invoke(new delegate3(_AddLog), str);
+            } else {
+                _AddLog(str);
+            }
+        }
+        private void _AddLog(string str) {
+            textBox1.AppendText("[" + DateTime.Now.ToString("yyyyMMdd_HHmmss") +"] "+ str + "\r\n");
+        }
+
     }
 }

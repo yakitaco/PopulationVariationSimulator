@@ -32,6 +32,8 @@ namespace PVS {
             mainForm.fInstance.SetMapImg(map.img.bitmap);
             mainForm.fInstance.ActiveForm();
 
+            mainForm.fInstance.AddLog("test");
+
             while (finishFlg == false) {
                 Thread.Sleep(100);
             }
