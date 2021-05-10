@@ -10,6 +10,7 @@ using System.Windows.Forms;
 
 namespace PVS {
     public partial class progressForm : Form {
+        int type = 0;//作成タイプ(0=地形(terrain), 1=気候(climate), 2=川(river))
         int max = 0;
         int val = 0;
         public bool cancel = false;  //中断フラグ
@@ -48,7 +49,7 @@ namespace PVS {
             //作成した画像を表示する
             progressBar1.Value = _val;
             val = _val;
-            label1.Text = val.ToString() + "/"+ max.ToString() + " ("+ (val*100/max).ToString() +"%)";
+            label1.Text = "Terrain generation : " + val.ToString() + "/"+ max.ToString() + " ("+ (val*100/max).ToString() +"%)";
         }
 
         //表示終了用デリゲート
