@@ -45,7 +45,7 @@ namespace PVS {
         int Xcells;
         int Ycells;
         int riverMax = 100;
-
+        int climMax = 10;
         public pvs_map(int x, int y) {
             mapData = new mapCell[x, y];
             Xcells = x;
@@ -104,6 +104,8 @@ namespace PVS {
             }
 
             // 気候の生成
+            for (int i = 0; i < climMax; i++) {
+            }
 
             // 川の生成
             for (int i = 0; i < riverMax; i++) {
