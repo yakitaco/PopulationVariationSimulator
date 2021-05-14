@@ -18,8 +18,10 @@ namespace PVS {
     }
 
     class mapCell {
-        public int height;     //高さ (0=水面)
-        public CELLTYPE type;  //セルの種類
+        public int height;     // 高さ (0=水面)
+        public CELLTYPE type;  // セルの種類
+        public int temp;       // 気温
+        public int hume;       // 湿度
     }
 
     //マップイメージ画像
