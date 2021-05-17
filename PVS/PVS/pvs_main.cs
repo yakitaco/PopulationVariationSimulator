@@ -29,7 +29,7 @@ namespace PVS {
             //マップオブジェクト作成
             pvs_map map = new pvs_map((int)cnf.getPrmInt("Xcells"), (int)cnf.getPrmInt("Ycells"));
             var ret  = map.make();
-            mainForm.fInstance.SetMapImg(map.img.bitmap);
+            mainForm.fInstance.SetMapData(map);
             mainForm.fInstance.ActiveForm();
 
             mainForm.fInstance.AddLog("test");
