@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace PVS {
     //セルの種類
-    enum CELLTYPE {
+    public enum CELLTYPE {
         None,         //なし
         DeepSea,      //深海
         ShallowSea,   //浅海
@@ -17,7 +17,7 @@ namespace PVS {
         Mountain,     //山岳
     }
 
-    class mapCell {
+    public class mapCell {
         public int height;     // 高さ (0=水面)
         public CELLTYPE type;  // セルの種類
         public int temp;       // 気温
@@ -25,7 +25,7 @@ namespace PVS {
     }
 
     //マップイメージ画像
-    class mapImage {
+    public class mapImage {
         Bitmap img;
         public mapImage(int x, int y) {
             img = new Bitmap(x * 4, y * 4);
@@ -51,8 +51,8 @@ namespace PVS {
 
     }
 
-    class pvs_map {
-        mapCell[,] mapData;
+    public class pvs_map {
+        public mapCell[,] mapData;
         public mapImage img;
         int Xcells;
         int Ycells;
@@ -107,6 +107,11 @@ namespace PVS {
                     }
                     g.DrawRectangle(p, i * 4, j * 4, 2, 2);
                     p.Dispose();
+
+                    // 気候の設定
+                    mapData[i, j].temp = 0;
+                    mapData[i, j].hume = 0;
+
                 }
                 if (progressForm.fInstance.cancel == true) {
                     // Graphicsを解放する

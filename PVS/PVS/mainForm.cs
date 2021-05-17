@@ -8,6 +8,7 @@ namespace PVS {
         int Xcells;
         int Ycells;
         Bitmap img;
+        pvs_map map;
 
         bool bDrag = false;
         Point posStart;
@@ -55,17 +56,18 @@ namespace PVS {
         }
 
         //マップイメージ表示用デリゲート
-        delegate void delegate1(Bitmap _img);
+        delegate void delegate1(pvs_map _map);
 
-        public void SetMapImg(Bitmap _img) {
+        public void SetMapData(pvs_map _map) {
             if (this.InvokeRequired) {
-                Invoke(new delegate1(_SetMapImg), _img);
+                Invoke(new delegate1(_SetMapData), _map);
             } else {
-                _SetMapImg(_img);
+                _SetMapData(_map);
             }
         }
-        private void _SetMapImg(Bitmap _img) {
-            img = _img;
+        private void _SetMapData(pvs_map _map) {
+            map = _map;
+            img = _map.img.bitmap;
             var a = mapSize_TRB.Value;
             //作成した画像を表示する
             //Map_pctBox.Image = _img;
@@ -122,8 +124,14 @@ namespace PVS {
 
             SimSpdTimer.Tick += (_s, _e) => {
                 cp = this.Map_pctBox.PointToClient(System.Windows.Forms.Cursor.Position);
+                int x = cp.X * 10 / mapSize_TRB.Value / 4;
+                int y = cp.Y * 10 / mapSize_TRB.Value / 4;
                 this.label1.Location = new Point(this.PointToClient(System.Windows.Forms.Cursor.Position).X + 16, this.PointToClient(System.Windows.Forms.Cursor.Position).Y + 16);
-                label1.Text = cnt.ToString() + "(" + (cp.X * 10 / mapSize_TRB.Value / 4).ToString() + "," + (cp.Y * 10 / mapSize_TRB.Value / 4).ToString() + ")";
+                if (map == null) {
+                    label1.Text = cnt.ToString() + "(" + x.ToString() + "," + y.ToString() + ")";
+                } else {
+                    label1.Text = "(" + x.ToString() + "," + y.ToString() + ")" + map.mapData[ x, y ].height + "/" + map.mapData[x, y].temp + "/" + map.mapData[x, y].hume  ;
+                }
                 p_graph.Series[p].Points.AddY(cnt * cnt + rnd.Next(1, 100));
                 cnt++;
             };
