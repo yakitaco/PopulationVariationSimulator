@@ -107,6 +107,11 @@ namespace PVS {
                     }
                     g.DrawRectangle(p, i * 4, j * 4, 2, 2);
                     p.Dispose();
+
+                    // 気候の設定
+                    mapData[i, j].temp = 0;
+                    mapData[i, j].hume = 0;
+
                 }
                 if (progressForm.fInstance.cancel == true) {
                     // Graphicsを解放する
