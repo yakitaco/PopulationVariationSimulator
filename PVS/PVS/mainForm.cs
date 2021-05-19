@@ -126,11 +126,13 @@ namespace PVS {
                 cp = this.Map_pctBox.PointToClient(System.Windows.Forms.Cursor.Position);
                 int x = cp.X * 10 / mapSize_TRB.Value / 4;
                 int y = cp.Y * 10 / mapSize_TRB.Value / 4;
-                this.label1.Location = new Point(this.PointToClient(System.Windows.Forms.Cursor.Position).X + 16, this.PointToClient(System.Windows.Forms.Cursor.Position).Y + 16);
-                if (map == null) {
-                    label1.Text = cnt.ToString() + "(" + x.ToString() + "," + y.ToString() + ")";
-                } else {
-                    label1.Text = "(" + x.ToString() + "," + y.ToString() + ")" + map.mapData[ x, y ].height + "/" + map.mapData[x, y].temp + "/" + map.mapData[x, y].hume  ;
+                if ( (x > -1) && (y > -1) && (x < Xcells) && (y < Ycells)) {
+                    this.label1.Location = new Point(this.PointToClient(System.Windows.Forms.Cursor.Position).X + 16, this.PointToClient(System.Windows.Forms.Cursor.Position).Y + 16);
+                    if (map == null) {
+                        label1.Text = cnt.ToString() + "(" + x.ToString() + "," + y.ToString() + ")";
+                    } else {
+                        label1.Text = "(" + x.ToString() + "," + y.ToString() + ")" + map.mapData[x, y].height + "/" + map.mapData[x, y].temp + "/" + map.mapData[x, y].hume;
+                    }
                 }
                 p_graph.Series[p].Points.AddY(cnt * cnt + rnd.Next(1, 100));
                 cnt++;

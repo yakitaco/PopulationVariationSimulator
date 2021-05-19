@@ -54,8 +54,8 @@ namespace PVS {
     public class pvs_map {
         public mapCell[,] mapData;
         public mapImage img;
-        int Xcells;
-        int Ycells;
+        public int Xcells;
+        public int Ycells;
         int riverMax = 100;
         int climMax = 10;
         public pvs_map(int x, int y) {
@@ -81,6 +81,7 @@ namespace PVS {
             double x2_rnd = rnd.NextDouble();
             double y2_rnd = rnd.NextDouble();
             double z2_rnd = rnd.NextDouble();
+
 
             progressForm.fInstance = new progressForm(Xcells);
 
@@ -109,8 +110,8 @@ namespace PVS {
                     p.Dispose();
 
                     // 気候の設定
-                    mapData[i, j].temp = 0;
-                    mapData[i, j].hume = 0;
+                    mapData[i, j].temp = (int)( 42 * Math.Sin((double)j / (double)Ycells * Math.PI) - 10);
+                    mapData[i, j].hume = mapData[i, j].temp - mapData[i, j].height / 2  + 30;
 
                 }
                 if (progressForm.fInstance.cancel == true) {
